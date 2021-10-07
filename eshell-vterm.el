@@ -1,11 +1,11 @@
-;;; eshell-vterm.el --- Vterm for visual commands in eshell. -*- lexical-binding: t; -*-
+;;; eshell-vterm.el --- Vterm for visual commands in eshell -*- lexical-binding: t; -*-
 
 ;; Author: Illia Ostapyshyn <ilya.ostapyshyn@gmail.com>
 ;; Maintainer: Illia Ostapyshyn <ilya.ostapyshyn@gmail.com>
 ;; Created: 2021-06-29
 ;; Version: 0.1
-;; Package-Requires: ((emacs "27") (vterm "0.0.1"))
-;; Keywords: eshell, vterm, terminal, shell, visual
+;; Package-Requires: ((emacs "27.1") (vterm "0.0.1"))
+;; Keywords: eshell, vterm, terminals, shell, visual, tools, processes
 ;; URL: https://github.com/iostapyshyn/eshell-vterm
 
 ;; This file is not part of GNU Emacs.
