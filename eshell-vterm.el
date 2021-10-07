@@ -60,7 +60,7 @@ allowed."
   nil)
 
 (defun eshell-vterm-sentinel (proc msg)
-  "Clean up the buffer visiting PROC.
+  "Clean up the buffer visiting PROC with message MSG.
 If `eshell-destroy-buffer-when-process-dies' is non-nil, destroy
 the buffer."
   (let ((vterm-kill-buffer-on-exit nil))
