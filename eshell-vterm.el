@@ -34,6 +34,8 @@
 (require 'em-term)
 (require 'esh-ext)
 
+(defvar eshell-parent-buffer)
+
 (defun eshell-vterm-exec-visual (&rest args)
   "Run the specified PROGRAM in a terminal emulation buffer.
 ARGS are passed to the program.  At the moment, no piping of input is
@@ -44,7 +46,7 @@ allowed."
 	 (args (flatten-tree
 		(eshell-stringify-list (append (cdr interp)
 					       (cdr args)))))
-         (args (mapconcat 'identity args " "))
+         (args (mapconcat #'identity args " "))
 	 (term-buf (generate-new-buffer
 	            (concat "*" (file-name-nondirectory program) "*")))
 	 (eshell-buf (current-buffer))
