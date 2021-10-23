@@ -40,26 +40,30 @@
   "Run the specified PROGRAM in a terminal emulation buffer.
 ARGS are passed to the program.  At the moment, no piping of input is
 allowed."
+  (if (eq (length args) 0)
+      (progn
+        (vterm)
+        nil)
   (let* (eshell-interpreter-alist
-	 (interp (eshell-find-interpreter (car args) (cdr args)))
+     (interp (eshell-find-interpreter (car args) (cdr args)))
          (program (car interp))
-	 (args (flatten-tree
-		(eshell-stringify-list (append (cdr interp)
-					       (cdr args)))))
+     (args (flatten-tree
+        (eshell-stringify-list (append (cdr interp)
+                           (cdr args)))))
          (args (mapconcat #'identity args " "))
-	 (term-buf (generate-new-buffer
-	            (concat "*" (file-name-nondirectory program) "*")))
-	 (eshell-buf (current-buffer))
+     (term-buf (generate-new-buffer
+                (concat "*" (file-name-nondirectory program) "*")))
+     (eshell-buf (current-buffer))
          (vterm-shell (concat program " " args)))
     (save-current-buffer
       (switch-to-buffer term-buf)
       (vterm-mode)
       (setq-local eshell-parent-buffer eshell-buf)
       (let ((proc (get-buffer-process term-buf)))
-	(if (and proc (eq 'run (process-status proc)))
-	    (set-process-sentinel proc #'eshell-vterm-sentinel)
-	  (error "Failed to invoke visual command")))))
-  nil)
+    (if (and proc (eq 'run (process-status proc)))
+        (set-process-sentinel proc #'eshell-vterm-sentinel)
+      (error "Failed to invoke visual command")))))
+  nil))
 
 (defun eshell-vterm-sentinel (proc msg)
   "Clean up the buffer visiting PROC with message MSG.
