@@ -39,26 +39,28 @@
 (defun eshell-vterm-exec-visual (&rest args)
   "Run the specified PROGRAM in a terminal emulation buffer.
 ARGS are passed to the program.  At the moment, no piping of input is
-allowed."
-  (let* (eshell-interpreter-alist
-	 (interp (eshell-find-interpreter (car args) (cdr args)))
-         (program (car interp))
-	 (args (flatten-tree
-		(eshell-stringify-list (append (cdr interp)
-					       (cdr args)))))
-         (args (mapconcat #'identity args " "))
-	 (term-buf (generate-new-buffer
-	            (concat "*" (file-name-nondirectory program) "*")))
-	 (eshell-buf (current-buffer))
-         (vterm-shell (concat program " " args)))
-    (save-current-buffer
-      (switch-to-buffer term-buf)
-      (vterm-mode)
-      (setq-local eshell-parent-buffer eshell-buf)
-      (let ((proc (get-buffer-process term-buf)))
-	(if (and proc (eq 'run (process-status proc)))
-	    (set-process-sentinel proc #'eshell-vterm-sentinel)
-	  (error "Failed to invoke visual command")))))
+allowed.  In case ARGS is nil, a new VTerm session is created."
+  (if args
+      (let* (eshell-interpreter-alist
+             (interp (eshell-find-interpreter (car args) (cdr args)))
+             (program (car interp))
+             (args (flatten-tree
+                    (eshell-stringify-list (append (cdr interp)
+                                                   (cdr args)))))
+             (args (mapconcat #'identity args " "))
+             (term-buf (generate-new-buffer
+                        (concat "*" (file-name-nondirectory program) "*")))
+             (eshell-buf (current-buffer))
+             (vterm-shell (concat program " " args)))
+        (save-current-buffer
+          (switch-to-buffer term-buf)
+          (vterm-mode)
+          (setq-local eshell-parent-buffer eshell-buf)
+          (let ((proc (get-buffer-process term-buf)))
+            (if (and proc (eq 'run (process-status proc)))
+                (set-process-sentinel proc #'eshell-vterm-sentinel)
+              (error "Failed to invoke visual command")))))
+    (vterm '(4))) ; Start a new session
   nil)
 
 (defun eshell-vterm-sentinel (proc msg)
