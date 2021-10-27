@@ -1,3 +1,4 @@
+[![MELPA](https://melpa.org/packages/eshell-vterm-badge.svg)](https://melpa.org/#/eshell-vterm)
 # eshell-vterm
 
 An Emacs global minor mode allowing `eshell` to use
