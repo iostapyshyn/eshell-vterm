@@ -51,7 +51,7 @@ allowed.  In case ARGS is nil, a new VTerm session is created."
              (term-buf (generate-new-buffer
                         (concat "*" (file-name-nondirectory program) "*")))
              (eshell-buf (current-buffer))
-             (vterm-shell (concat program " " args)))
+             (vterm-shell (concat (file-local-name program) " " args)))
         (save-current-buffer
           (switch-to-buffer term-buf)
           (vterm-mode)
