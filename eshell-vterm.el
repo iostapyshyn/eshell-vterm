@@ -47,11 +47,13 @@ allowed.  In case ARGS is nil, a new VTerm session is created."
              (args (flatten-tree
                     (eshell-stringify-list (append (cdr interp)
                                                    (cdr args)))))
-             (args (mapconcat #'identity args " "))
+             (args (mapconcat #'shell-quote-argument args " "))
              (term-buf (generate-new-buffer
                         (concat "*" (file-name-nondirectory program) "*")))
              (eshell-buf (current-buffer))
-             (vterm-shell (concat (file-local-name program) " " args)))
+             (vterm-shell (concat (shell-quote-argument
+                                   (file-local-name program))
+                                  " " args)))
         (save-current-buffer
           (switch-to-buffer term-buf)
           (vterm-mode)
