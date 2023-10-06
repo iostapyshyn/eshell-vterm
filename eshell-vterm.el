@@ -33,6 +33,7 @@
 (require 'vterm)
 (require 'em-term)
 (require 'esh-ext)
+(require 'vterm-remote-utils)
 
 (defvar eshell-parent-buffer)
 
@@ -56,7 +57,14 @@ allowed.  In case ARGS is nil, a new VTerm session is created."
                                   " " args)))
         (save-current-buffer
           (switch-to-buffer term-buf)
-          (vterm-mode)
+	  (if (not (file-remote-p default-directory))
+	      (vterm-mode)
+	    (let* ((cd-directory (file-local-name default-directory))
+		   (user@host (vterm-remote-make-user@host default-directory))
+		   (default-directory "~")
+		   (vterm-shell (vterm-remote-make-command vterm-shell user@host)))
+	      (vterm-mode)
+	      ))
           (setq-local eshell-parent-buffer eshell-buf)
           (let ((proc (get-buffer-process term-buf)))
             (if (and proc (eq 'run (process-status proc)))
