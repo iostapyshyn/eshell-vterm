@@ -56,7 +56,9 @@ allowed.  In case ARGS is nil, a new VTerm session is created."
                                   " " args)))
         (save-current-buffer
           (switch-to-buffer term-buf)
-          (vterm-mode)
+          (cl-letf (((symbol-function 'vterm--get-shell)
+                     (lambda () vterm-shell)))
+            (vterm-mode))
           (setq-local eshell-parent-buffer eshell-buf)
           (let ((proc (get-buffer-process term-buf)))
             (if (and proc (eq 'run (process-status proc)))
